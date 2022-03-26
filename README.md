@@ -1,6 +1,8 @@
 # MicroProcessor
 A simple MicroProcessor demo in Python.
 
+The example calculates 5 times 5 into register B.
+
 The example run log.
 
 ```
