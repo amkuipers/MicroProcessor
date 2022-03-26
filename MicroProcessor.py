@@ -19,7 +19,7 @@ class MicroProcessor:
         # flags
         self.zero = True
         # memory
-        self.mem = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+        # self.mem = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
         # app (program)
         self.app = []
         # program counter
@@ -28,58 +28,57 @@ class MicroProcessor:
     def move_in_a(self, i):
         self.reg_a = i
         self.zero = True if 0 == self.reg_a else False
+        print(f'{self.pc:04d} MOVA {i} \t=> A {self.reg_a} ZF {self.zero}')
         self.pc += 2
-        print('Move', i, ' in a, zero flag', self.zero)
 
     def move_in_b(self, i):
         self.reg_b = i
         self.zero = True if 0 == self.reg_b else False
+        print(f'{self.pc:04d} MOVB {i} \t=> B {self.reg_b} ZF {self.zero}')
         self.pc += 2
-        print('Move', i, ' in b, zero flag:', self.zero)
 
     def add_to_a(self, i):
         self.reg_a += i
         self.zero = True if 0 == self.reg_a else False
+        print(f'{self.pc:04d} ADDA {i} \t=> A {self.reg_a} ZF {self.zero}')
         self.pc += 2
-        print('Add', i, ' to a:', self.reg_a, ', zero flag:', self.zero)
 
     def add_to_b(self, i):
         self.reg_b += i
         self.zero = True if 0 == self.reg_b else False
+        print(f'{self.pc:04d} ADDB {i} \t=> B {self.reg_b} ZF {self.zero}')
         self.pc += 2
-        print('Add', i, ' to b:', self.reg_b, ', zero flag:', self.zero)
 
     def cmp_to_a(self, i):
         self.zero = True if i == self.reg_a else False
+        print(f'{self.pc:04d} CMPA {i} \t=> ZF {self.zero}')
         self.pc += 2
-        print('Compare', i, ' to a:', self.reg_a, ', zero flag:', self.zero)
 
     def cmp_to_b(self, i):
         self.zero = True if i == self.reg_b else False
+        print(f'{self.pc:04d} CMPB {i} \t=> ZF {self.zero}')
         self.pc += 2
-        print('Compare', i, ' to b:', self.reg_b, ', zero flag:', self.zero)
 
     def jump_zero(self, relative):
+        print(f'{self.pc:04d} JZ   {relative} \t=> ZF {self.zero} PC {self.pc+relative:04d}')
         if self.zero:
             self.pc += relative
-            # self.pc += 2
-            print('Jump', relative, ' to PC:', self.pc, ', zero flag:', self.zero)
         else:
             self.pc += 2
 
     def jump_non_zero(self, relative):
+        print(f'{self.pc:04d} JNZ  {relative} \t=> ZF {self.zero} PC {self.pc+relative:04d}')
         if not self.zero:
             self.pc += relative
-            # self.pc += 2
-            print('Jump', relative, ' to PC:', self.pc, ', zero flag:', self.zero)
         else:
             self.pc += 2
 
     def info(self):
         # debug info
         # * unpacks the array
-        print('Mem:', *self.mem, 'App:', *self.app)
-        print('a', self.reg_a, 'b', self.reg_b, 'pc', self.pc, 'zero', self.zero)
+        # print('Mem:', *self.mem, 'App:', *self.app)
+        print('App:', *self.app)
+        print(f'A {self.reg_a} B {self.reg_b} PC {self.pc:04d} ZF {self.zero}')
 
     def run(self, app):
         self.app = app
@@ -125,6 +124,8 @@ if __name__ == '__main__':
 
     # This basically multiplies 5 times 5 into register B
     up.run([
+        MOVA, 0,
+        MOVB, 0,
         ADDA, 1,
         ADDB, 5,
         CMPA, 5,
